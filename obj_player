@@ -1,0 +1,43 @@
+create:
+hsp = 0;
+vsp = 0;
+grv = 0.4;
+jumpspeed = -8;
+movespeed = 3;
+can_jump = false;
+step:
+// Horizontal movement
+hsp = keyboard_check(vk_right) - keyboard_check(vk_left);
+hsp *= movespeed;
+
+// Apply gravity
+vsp += grv;
+
+// Jumping
+if (place_meeting(x, y + 1, obj_solid)) {
+    can_jump = true;
+    vsp = 0; // Optional: Reset vertical speed when grounded
+}
+
+if (can_jump && keyboard_pressed(vk_space)) {
+    vsp = jumpspeed;
+    can_jump = false;
+}
+
+// Horizontal collision
+if (place_meeting(x + hsp, y, obj_solid)) {
+    while (!place_meeting(x + sign(hsp), y, obj_solid)) {
+        x += sign(hsp);
+    }
+    hsp = 0;
+}
+x += hsp;
+
+// Vertical collision
+if (place_meeting(x, y + vsp, obj_solid)) {
+    while (!place_meeting(x, y + sign(vsp), obj_solid)) {
+        y += sign(vsp);
+    }
+    vsp = 0;
+}
+y += vsp;
