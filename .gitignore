@@ -1,0 +1,6 @@
+# GameMaker Studio
+.yyc/
+*.yyz
+.idea/
+.vscode/
+.DS_Store
